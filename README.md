@@ -37,7 +37,7 @@ To run this project, you need the following dependencies:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/alexnet-pytorch.git
+   git clone https://github.com/AndrewWladis/alexnet-recreation.git
    ```
 
 2. Install the required dependencies:
@@ -54,16 +54,6 @@ To run this project, you need the following dependencies:
    python train.py
    ```
 
-5. Evaluate the trained model:
-   ```
-   python evaluate.py
-   ```
-
-6. Visualize the learned features and activations:
-   ```
-   python visualize.py
-   ```
-
 ## Results
 
 The trained AlexNet model achieves competitive performance on the ImageNet dataset. The evaluation script provides metrics such as accuracy, precision, recall, and F1 score. The visualization script allows for qualitative analysis of the learned features and activations.
@@ -73,6 +63,4 @@ The trained AlexNet model achieves competitive performance on the ImageNet datas
 This project is inspired by the original AlexNet paper:
 - Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). ImageNet classification with deep convolutional neural networks. Advances in neural information processing systems, 25.
 
-## License
 
-This project is licensed under the [MIT License](LICENSE).
