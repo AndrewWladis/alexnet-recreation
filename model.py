@@ -6,39 +6,48 @@ class AlexNet(nn.Module):
     def __init__(self, num_classes=1000):
         super(AlexNet, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),  # Conv1
+            # 1st Conv Layer
+            nn.Conv2d(3, 96, kernel_size=11, stride=4, padding=2), # input (3x224x224)
             nn.ReLU(inplace=True),
+            nn.LocalResponseNorm(5, alpha=0.0001, beta=0.75, k=2),
             nn.MaxPool2d(kernel_size=3, stride=2),
-            nn.Conv2d(64, 192, kernel_size=5, padding=2),           # Conv2
+            
+            # 2nd Conv Layer
+            nn.Conv2d(96, 256, kernel_size=5, padding=2),
             nn.ReLU(inplace=True),
+            nn.LocalResponseNorm(5, alpha=0.0001, beta=0.75, k=2),
             nn.MaxPool2d(kernel_size=3, stride=2),
-            nn.Conv2d(192, 384, kernel_size=3, padding=1),          # Conv3
+            
+            # 3rd Conv Layer
+            nn.Conv2d(256, 384, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(384, 256, kernel_size=3, padding=1),          # Conv4
+            
+            # 4th Conv Layer
+            nn.Conv2d(384, 384, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.Conv2d(256, 256, kernel_size=3, padding=1),          # Conv5
+            
+            # 5th Conv Layer
+            nn.Conv2d(384, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2)
         )
+        
         self.classifier = nn.Sequential(
-            nn.Dropout(0.5),
-            nn.Linear(256 * 6 * 6, 4096),  # Flattened size after conv layers
+            nn.Dropout(),
+            nn.Linear(256 * 6 * 6, 4096), # Flatten to FC input
             nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
+            nn.Dropout(),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes)
+            nn.Linear(4096, num_classes),
         )
-
+        
     def forward(self, x):
         x = self.features(x)
-        x = torch.flatten(x, 1)
+        x = x.view(x.size(0), -1) # Flatten
         x = self.classifier(x)
         return x
 
-# Instantiate the model
+# Example usage
 model = AlexNet(num_classes=1000)
-
-# Print model architecture
 print(model)
-
